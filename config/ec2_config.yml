@@ -1,0 +1,27 @@
+instance_type: t2.micro # Free or t1.micro
+amazon_linux_image_attributes:
+  dry_run: false
+  owners:
+    - self
+    - amazon
+  filters:
+    -
+      name: root-device-type
+      values:
+        - ebs
+    -
+      name: architecture
+      values:
+        - x86_64
+    -
+      name: image-type
+      values:
+        - machine
+    -
+      name: is-public
+      values:
+        - 'true'
+    -
+      name: state
+      values:
+        - available

@@ -1,0 +1,6 @@
+# Ignore bundler config.
+/.bundle
+.DS_Store
+/vendor/*
+/aws_config/*
+test.rb

@@ -1,0 +1,120 @@
+---
+  AWSTemplateFormatVersion: "2010-09-09"
+  Description: "Proxy CloudFormation Basic 0.0.1"
+  Mappings:
+    AvailabilityZoneMap:
+      <%= region %>:
+        AZ1: <%= region + "a" %>
+        AZ2: <%= region + "c" %>
+  Parameters:
+    VPCCIDR:
+      Default: "10.0.0"
+      Description: "VPC CIDR (X.X.X.0/24)"
+      Type: "String"
+  Resources:
+    EC2VPC:
+      Properties:
+        CidrBlock:
+          Fn::Join:
+            - ""
+            -
+              -
+                Ref: "VPCCIDR"
+              - ".0/24"
+        Tags:
+          -
+            Key: "Name"
+            Value: "proxy_vpc"
+      Type: "AWS::EC2::VPC"
+    EC2InternetGateway:
+      Properties:
+        Tags:
+          -
+            Key: "Name"
+            Value: "proxy_gateway"
+      Type: "AWS::EC2::InternetGateway"
+    EC2VPCGatewayAttachmentInternet:
+      Properties:
+        InternetGatewayId:
+          Ref: "EC2InternetGateway"
+        VpcId:
+          Ref: "EC2VPC"
+      Type: "AWS::EC2::VPCGatewayAttachment"
+    EC2RouteTablePublic:
+      Properties:
+        VpcId:
+          Ref: "EC2VPC"
+        Tags:
+          -
+            Key: "Name"
+            Value: "proxy_route_public"
+      Type: "AWS::EC2::RouteTable"
+    EC2RoutePublic:
+      Properties:
+        DestinationCidrBlock: "0.0.0.0/0"
+        GatewayId:
+          Ref: "EC2InternetGateway"
+        RouteTableId:
+          Ref: "EC2RouteTablePublic"
+      Type: "AWS::EC2::Route"
+    EC2SubnetPublicFixA08:
+      Properties:
+        AvailabilityZone:
+          Fn::FindInMap:
+            - "AvailabilityZoneMap"
+            -
+              Ref: "AWS::Region"
+            - "AZ1"
+        CidrBlock:
+          Fn::Join:
+            - ""
+            -
+              -
+                Ref: "VPCCIDR"
+              - ".1/24"
+        VpcId:
+          Ref: "EC2VPC"
+        Tags:
+          -
+            Key: "Name"
+            Value: "proxy_public"
+      Type: "AWS::EC2::Subnet"
+    EC2SubnetRouteTableAssociationPublicFixA08:
+      Properties:
+        RouteTableId:
+          Ref: "EC2RouteTablePublic"
+        SubnetId:
+          Ref: "EC2SubnetPublicFixA08"
+      Type: "AWS::EC2::SubnetRouteTableAssociation"
+    ProxyServerSecurityGroup:
+      Type: "AWS::EC2::SecurityGroup"
+      Properties:
+        GroupDescription: "SecurityGroup App-grp"
+        VpcId:
+          Ref: "EC2VPC"
+        SecurityGroupIngress:
+          -
+            IpProtocol: "tcp"
+            FromPort: <%= proxy_port %>
+            ToPort: <%= proxy_port %>
+            CidrIp: <%= allowed_ip %>
+          -
+            IpProtocol: "tcp"
+            FromPort: "22"
+            ToPort: "22"
+            CidrIp: <%= allowed_ip %>
+        Tags:
+          -
+            Key: "Name"
+            Value: "proxy-server_security_group"
+  Outputs:
+    Guideline:
+      Value: ""
+    VPCCIDR:
+      Value:
+        Fn::Join:
+          - ""
+          -
+            -
+              Ref: "VPCCIDR"
+            - ".0/24"
