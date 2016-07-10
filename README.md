@@ -1,5 +1,18 @@
 # Create Proxy Server
 
+## explain
+
+AWS provide free tier EC2 instance(t1.micro) from you create new account till past 1 year.
+So this application provide create free proxy instance automatically in your AWS account.
+
+You can create secure proxy instance easily and temporary.
+Please feel free to create and dispose proxy instance.
+
+## environment
+
+Mac OS X EL Capitan
+ver 10.11.4
+
 ### need
 
 | program | version |
@@ -23,13 +36,15 @@ $ bundle install --path vendor/bundler
 
 ### set aws config
 
-create file `aws_config/aws_config.yml`
+create directory `aws_config`.
+then create file `aws_config/aws_config.yml`
 
 and write like this.
 ```
-access_key_id: xxxxxxxxxxxxxx
+access_key_id:     xxxxxxxxxxxxxx
 secret_access_key: zzzzzzzzzzzzzzzzzz
 ```
+Permissions is `AdministratorAccess`.
 
 ### set proxy user & password
 
