@@ -95,8 +95,8 @@
         SecurityGroupIngress:
           -
             IpProtocol: "tcp"
-            FromPort: <%= proxy_port %>
-            ToPort: <%= proxy_port %>
+            FromPort: <%= port %>
+            ToPort: <%= port %>
             CidrIp: <%= allowed_ip %>
           -
             IpProtocol: "tcp"

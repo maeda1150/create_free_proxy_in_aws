@@ -2,12 +2,15 @@ package 'squid' do
   action :install
 end
 
-remote_file '/etc/squid/squid.conf' do
-  source "files/squid.conf"
+template '/etc/squid/squid.conf' do
+  owner 'root'
+  group 'root'
+  mode '644'
+  source 'templates/squid.conf.erb'
 end
 
 execute 'create auth file' do
-  command "printf \"#{ node['user'] || 'user' }:$(openssl passwd -crypt #{ node['pass'] || 'pass' })\" > /etc/httpd/conf.d/squid.conf"
+  command "printf \"#{ node['user'] }:$(openssl passwd -crypt #{ node['pass'] })\" > /etc/httpd/conf.d/squid.conf"
   user 'root'
 end
 

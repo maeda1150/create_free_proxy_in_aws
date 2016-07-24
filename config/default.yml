@@ -1,2 +1,5 @@
 region: tokyo
-proxy_port: 49099
+port: 8080
+basic_auth:
+  user: user
+  pass: pass

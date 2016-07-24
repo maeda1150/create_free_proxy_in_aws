@@ -12,7 +12,7 @@ acl Safe_ports port 777         # multiling http
 acl CONNECT method CONNECT
 
 # 開けたいport番号
-http_port 49099
+http_port <%= node[:port] %>
 coredump_dir /var/spool/squid
 
 refresh_pattern ^ftp:           1440    20%     10080
