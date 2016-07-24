@@ -129,7 +129,7 @@ $ bundle exec ruby create_proxy.rb -g
 $ bundle exec ruby delete_proxy.rb
 ```
 
-* option `-s`(silent), `--region`, `-d`(execute demon), `-a`(delete each region proxy instance)
+* option `--region`, `-s`(silent), `-d`(execute demon)
 
 ## execute check exists proxy
 
@@ -138,4 +138,3 @@ $ bundle exec ruby check_exists_proxy.rb
 ```
 
 * no option
-

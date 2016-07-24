@@ -16,7 +16,7 @@ aws_config = Util.load_yaml('aws_config.yml', 'aws_config')
 default    = Util.load_yaml('default.yml')
 regions    = Util.load_yaml('regions.yml')
 ec2_config = Util.load_yaml('ec2_config.yml')
-params     = ARGV.getopts('sad', 'region:')
+params     = ARGV.getopts('sd', 'region:')
 credentials = Aws::Credentials.new(aws_config['access_key_id'], aws_config['secret_access_key'])
 
 if params['region'] && !regions.keys.include?(params['region'])
@@ -46,8 +46,11 @@ def delete_cf(demon)
 end
 
 target_regions = []
-target_regions << regions[params['region']] || regions['tokyo']
-target_regions = regions.values if params['a']
+if params['region']
+  target_regions << regions[params['region']]
+else
+  target_regions = regions.values unless params['region']
+end
 
 target_regions.each do |region|
   puts '=' * 50
