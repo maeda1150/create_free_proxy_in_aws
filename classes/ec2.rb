@@ -31,6 +31,10 @@ class EC2
     !proxy_instance.nil?
   end
 
+  def running_instance_count
+    running_instances.count
+  end
+
   private
 
   def ec2
@@ -53,6 +57,16 @@ class EC2
       end
     end
     @proxy_instance
+  end
+
+  def running_instances
+    is = []
+    ec2.describe_instances.reservations.each do |instances|
+      instances.instances.each do |ins|
+        is << ins if ins.state.name == 'running'
+      end
+    end
+    is
   end
 
   def amazon_linux_latest_image
