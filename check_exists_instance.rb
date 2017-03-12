@@ -23,7 +23,7 @@ aws_configs.each do |aws_config|
   regions.each do |key, region|
     Aws.config.update(region: region, credentials: credentials)
     ec2 = EC2.new(ec2_config, region)
-    puts " #{Util.optimize_line(key, 12)} : #{ec2.running_instance_count} "
+    puts " #{Util.optimize_line(key, 12)} : #{ec2.running_instance_count} : #{ec2.running_instance_names}"
   end
   puts '=' * 25
 end

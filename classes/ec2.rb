@@ -35,6 +35,14 @@ class EC2
     running_instances.count
   end
 
+  def running_instance_names
+    running_instances.map do |ins|
+      ins.tags.map do |tag|
+        tag.value if tag.key == 'Name'
+      end.compact
+    end.join(', ')
+  end
+
   private
 
   def ec2
