@@ -21,11 +21,9 @@ aws_configs.each do |aws_config|
   puts aws_config['account_name']
   credentials = Aws::Credentials.new(aws_config['access_key_id'], aws_config['secret_access_key'])
   regions.each do |key, region|
-    puts '-' * 25
     Aws.config.update(region: region, credentials: credentials)
     ec2 = EC2.new(ec2_config, region)
     puts " #{Util.optimize_line(key, 12)} : #{ec2.running_instance_count} "
-    puts '-' * 25
   end
   puts '=' * 25
 end
