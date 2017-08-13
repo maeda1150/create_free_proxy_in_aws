@@ -70,9 +70,22 @@ puts 'Start execute itamae.'
 
 system 'rm -rf itamae/config'
 system 'mkdir itamae/config'
+
+## for basic auth settings
 system "echo 'user: #{ basic_auth['user'] }' >> itamae/config/params.yml"
 system "echo 'pass: #{ basic_auth['pass'] }' >> itamae/config/params.yml"
 system "echo 'port: #{ port }' >> itamae/config/params.yml"
+
+## for tmux settings
+## https://github.com/sue445/itamae-plugin-recipe-tmux
+## http://sue445.hatenablog.com/entry/2016/02/25/120832
+system "echo 'tmux:' >> itamae/config/params.yml"
+system "echo '  prefix: /usr/local' >> itamae/config/params.yml"
+system "echo '  version: 2.1' >> itamae/config/params.yml"
+system "echo 'libevent:' >> itamae/config/params.yml"
+system "echo '  version: 2.0.22' >> itamae/config/params.yml"
+system "echo 'ncurses:' >> itamae/config/params.yml"
+system "echo '  version: 6.0' >> itamae/config/params.yml"
 
 system "bundle exec itamae ssh -h #{ ec2.public_ip_address } -u ec2-user -i #{ full_key_name } -y itamae/config/params.yml itamae/recipe.rb 1>/dev/null 2>/dev/null"
 

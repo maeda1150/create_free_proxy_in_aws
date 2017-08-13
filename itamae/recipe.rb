@@ -17,3 +17,5 @@ end
 service 'squid' do
   action [:enable, :restart]
 end
+
+include_recipe 'tmux'
